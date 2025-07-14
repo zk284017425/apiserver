@@ -2,6 +2,7 @@ package org.zerock.apiserver.todo.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 
@@ -16,6 +17,7 @@ public class TodoDTO {
 
   private boolean completed;
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime createdDate;
 
   public TodoDTO(Integer tno, String title, String writer, boolean completed, LocalDateTime createdDate) {

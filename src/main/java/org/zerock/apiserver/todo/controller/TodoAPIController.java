@@ -23,12 +23,12 @@ public class TodoAPIController {
 
   @GetMapping("{tno}")
   public TodoDTO getOne(@PathVariable("tno") Integer tno) {
-
-
     log.info("getOne...............");
     log.info(tno);
-    
-    return service.getOne(tno).get();
+
+
+
+      return service.getOne(tno).get();
   }
 
 
@@ -45,7 +45,10 @@ public class TodoAPIController {
 
   @GetMapping("list")
   public ListDTO<TodoDTO> getList(@RequestParam("page") int page) {
-      return service.list(page);
+
+
+
+    return service.list(page);
   }
 
   //curl -X PUT http://localhost:8080/api/todos/1 -F "title=Hello World" -F "writer=Zerock" -F "completed=true"
