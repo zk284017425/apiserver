@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.zerock.apiserver.todo.dto.ListDTO;
 import org.zerock.apiserver.todo.dto.TodoDTO;
 import org.zerock.apiserver.todo.entity.TodoEntity;
+import org.zerock.apiserver.todo.exceptions.TodoNotFoundException;
 import org.zerock.apiserver.todo.repository.TodoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,13 @@ public class TodoServiceImpl implements TodoService {
 
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Optional<TodoDTO> getOne(Integer tno) {
     
     Optional<TodoEntity> result = repository.findById(tno);
 
-    TodoEntity entity  = result.get();
+    TodoEntity entity  = result.orElseThrow(() -> new TodoNotFoundException("Not Found"));
 
     return Optional.of( entityToDTO(entity) );
 
@@ -49,8 +51,9 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public TodoDTO modify(TodoDTO todoDTO) {
-    
-    TodoEntity entity = repository.findById(todoDTO.getTno()).get();
+
+    TodoEntity entity = repository.findById(todoDTO.getTno())
+            .orElseThrow(() -> new TodoNotFoundException("Not Found"));
 
     entity.changeCompleted(todoDTO.isCompleted());
     entity.changeTitle(todoDTO.getTitle());
@@ -63,11 +66,15 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public void remove(Integer tno) {
-    
+
+    TodoEntity entity = repository.findById(tno)
+            .orElseThrow(() -> new TodoNotFoundException("Not Found"));
+
     repository.deleteById(tno);
 
   }
 
+  @Transactional(readOnly = true)
   @Override
   public ListDTO<TodoDTO> list(int page) {
     
