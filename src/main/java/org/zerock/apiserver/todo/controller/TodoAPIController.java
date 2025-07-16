@@ -26,7 +26,11 @@ public class TodoAPIController {
     log.info("getOne...............");
     log.info(tno);
 
-
+    try {
+      Thread.sleep(4000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
 
       return service.getOne(tno).get();
   }
@@ -38,6 +42,12 @@ public class TodoAPIController {
 
     log.info("register...............");
     log.info(dto);
+
+    try {
+      Thread.sleep(4000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
       
     return service.register(dto);
   }
@@ -46,9 +56,14 @@ public class TodoAPIController {
   @GetMapping("list")
   public ListDTO<TodoDTO> getList(@RequestParam("page") int page) {
 
+      try {
+          Thread.sleep(3000);
+      } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+      }
 
 
-    return service.list(page);
+      return service.list(page);
   }
 
   //curl -X PUT http://localhost:8080/api/todos/1 -F "title=Hello World" -F "writer=Zerock" -F "completed=true"
